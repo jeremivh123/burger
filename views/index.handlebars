@@ -1,0 +1,24 @@
+{{#each burgers}}
+{{#if this.devoured}}
+<p>Devoured: {{this.burger_name}}</p>
+<button value="{{this.id}}">Devour</button>
+{{else}}
+<p>Not Devoured {{this.burger_name}}</p>
+<button value="{{this.id}}">Devour</button>
+{{/if}}
+{{/each}}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('button').click(function() {
+            $.ajax({
+                method: 'PUT',
+                url: '/api/burger/' + $(this).val(),
+            })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        });
+    });
+</script>
