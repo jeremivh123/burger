@@ -1,24 +1,74 @@
-{{#each burgers}}
-{{#if this.devoured}}
-<p>Devoured: {{this.burger_name}}</p>
-<button value="{{this.id}}">Devour</button>
-{{else}}
-<p>Not Devoured {{this.burger_name}}</p>
-<button value="{{this.id}}">Devour</button>
-{{/if}}
-{{/each}}
+
+
+<h1>JUICY BURGER</h1>
+
+            <div class="input-group mb-3">
+                    <input type="text" id="newBurger" class="form-control" placeholder="Make A Juicy Burger" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="cookBtn">Cook</button>
+                    </div>
+                  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <h2>Burgers</h2>
+      <hr>
+            <div id="burgerTable">
+                {{#each burgers}}
+                {{#unless this.devoured}}
+                <p>Not Devoured {{this.burger_name}}</p>
+                <button id="devouredBtn" value="{{this.id}}">Devour</button>
+                {{/unless}}
+                {{/each}}
+            </div>
+    </div>
+    <div class="col-sm">
+      <h3>Devoured</h3>
+      <hr>
+            <div id="devouredBurgers">
+                {{#each burgers}}
+                {{#if this.devoured}}
+                <p>Devoured: {{this.burger_name}}</p>
+                {{/if}}
+                {{/each}}
+            </div>
+    </div>
+  </div>
+                
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('button').click(function() {
+        $('#devouredBtn').click(function() {
             $.ajax({
                 method: 'PUT',
                 url: '/api/burger/' + $(this).val(),
+            })
+            .then(function() {
+                location.reload();
             })
                 .catch(function(err) {
                     console.log(err);
                 });
         });
+        $('#cookBtn').click(function(){
+            $('#newBurger').val();
+            $.ajax({
+                method: 'POST',
+                url: '/api/burgers',
+                data: { burger_name : $('#newBurger').val() },
+            })
+             .then(function() {
+                location.reload();
+            })
+            .catch(function(err){
+                console.log(err);
+            });
+        })
     });
+
+     
 </script>
+

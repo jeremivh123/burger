@@ -10,9 +10,9 @@ function createQmarks(num){
 
 function translateSql(obj){
     var arr = [];
-    for (var key in ob) {
-        var value = ob[key];
-        if (Object.hasOwnProperty.call(ob, key)){
+    for (var key in obj) {
+        var value = obj[key];
+        if (Object.hasOwnProperty.call(obj, key)){
             if (typeof value === "string" && value.indexOf(" ") >= 0){
                 value = "'" + value + "'" ;
             }
@@ -36,7 +36,7 @@ var orm = {
     insertOne: function(table, cols, vals, cb){
         var dbQuery = "INSERT INTO " + table + " (" + cols.toString() + ") " + "VALUES (" + createQmarks(vals.length) + ")";
         console.log(dbQuery);
-        connection.query(dbQuery, function(err, res){
+        connection.query(dbQuery, vals, function(err, res){
             if (err) {
                 throw err;
             }
@@ -44,7 +44,7 @@ var orm = {
         });
     },
     updateOne: function(table, objColVals, condition, cb){
-        var dbQuery = "UPDATE " + table + " SET " + translateSql(objColVals) + " WEHRE " + condition;
+        var dbQuery = "UPDATE " + table + " SET `devoured`=true WHERE `id` = " + condition;
         console.log(dbQuery);
         connection.query(dbQuery, function(err, res){
             if (err) {

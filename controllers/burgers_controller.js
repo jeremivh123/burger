@@ -18,10 +18,10 @@ router.get("/", function (req, res) {
 });
 
 // error came from here
-router.post("/api/burgers", function (req, res) {
+router.post("/api/burgers", function (req, res) {;
     burger.insertOne(
-        ["burger_name", "devoured"],
-        [req.body.burger_name, req.body.devoured],
+        ["burger_name"],
+        [req.body.burger_name],
         function (result) {
             //send back ID of new burger
             res.json({ id: result.insertId });
@@ -30,7 +30,7 @@ router.post("/api/burgers", function (req, res) {
 });
 
 router.put("/api/burger/:id", function (req, res) {
-    var condition = "id = " + req.param.id;
+    var condition = req.params.id;
     console.log("condition", condition);
     burger.updateOne({ devoured: req.body.devoured }, condition, function (
         result
